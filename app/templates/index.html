@@ -15,8 +15,16 @@
 </head>
 <body>
     <h1>Real-Time Video Stream</h1>
-
     <canvas id="video-feed" width="640" height="480"></canvas>
+
+    <h2>Camera Controls</h2>
+<div>
+    <button onclick="moveCamera('up')">Up</button><br>
+    <button onclick="moveCamera('left')">Left</button>
+    <button onclick="moveCamera('right')">Right</button><br>
+    <button onclick="moveCamera('down')">Down</button>
+</div>
+
     <script>    
         var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -49,6 +57,27 @@
             };
         });
         
+        function moveCamera(direction) {
+            console.log("Sending direction:", direction);
+        
+            fetch('/move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ direction: direction })
+            })
+            .then(response => {
+                console.log("Server response:", response);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
     </script>
 </body>
 </html>

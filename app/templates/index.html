@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Video Stream</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
+    <style>
+        #video-feed {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Video Stream</h1>
+
+    <canvas id="video-feed" width="640" height="480"></canvas>
+    <script>    
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+        // WebSocket connection
+        socket.on('connect', function() {
+            console.log("Connected to the server via WebSocket");
+        });
+
+        // WebSocket disconnection
+        socket.on('disconnect', function() {
+            console.log("Disconnected from the server. Reconnecting...");
+            socket.connect();  // Reconnect
+        });
+
+        socket.on('video_frame', function(data) {
+        
+            var img = new Image();  // Utwórz nowy obiekt obrazu
+            img.src = 'data:image/jpeg;base64,' + data.frame;  // Ustaw źródło obrazu (base64)
+        
+            img.onload = function() {
+                // Po załadowaniu obrazu narysuj go na canvas
+                var canvas = document.getElementById('video-feed');
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);  // Wyczyść canvas
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);  // Narysuj obraz
+            };
+        
+            img.onerror = function(e) {
+                console.error("Error loading image:", e);
+            };
+        });
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Streaming</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Video Streaming</h1>
+    <video id="video" width="640" height="480" controls autoplay></video>
+    <script>
+        const video = document.getElementById('video');
+        const socket = io();
+
+        socket.on('video_stream', (data) => {
+            const blob = new Blob([data], { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+            video.src = url;
+        });
+    </script>
+</body>
+</html>

@@ -11,11 +11,26 @@
             height: auto;
             display: block;
         }
+        #motion-status {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: red;
+            display: inline-block;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        #motion-status.active {
+            background-color: green;
+        }
     </style>
 </head>
 <body>
     <h1>Real-Time Video Stream</h1>
     <canvas id="video-feed" width="640" height="480"></canvas>
+
+    <div id="motion-status">Motion Status: No Motion</div>
 
     <h2>Camera Controls</h2>
 <div>
@@ -24,6 +39,14 @@
     <button onclick="moveCamera('right')">Right</button><br>
     <button onclick="moveCamera('down')">Down</button>
 </div>
+
+<h2>Recording Controls</h2>
+<div>
+    <button onclick="startRecording()">Start Recording</button>
+    <button onclick="stopRecording()">Stop Recording</button>
+</div>
+
+<p id="recording-status">Recording Status: Not Recording</p>
 
     <script>    
         var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -56,6 +79,19 @@
                 console.error("Error loading image:", e);
             };
         });
+
+         // Motion Status Update
+socket.on('motion_status', function(data) {
+    var motionStatus = document.getElementById('motion-status');
+    console.log(data.motion);
+    if (data.motion) {
+        motionStatus.textContent = "Motion Status: Motion Detected";
+        motionStatus.classList.add('active');
+    } else {
+        motionStatus.textContent = "Motion Status: No Motion";
+        motionStatus.classList.remove('active');
+    }
+});
         
         function moveCamera(direction) {
             console.log("Sending direction:", direction);
@@ -78,6 +114,28 @@
                 console.error('Error:', error);
             });
         }
+
+        // Recording controls
+        function startRecording() {
+            console.log("Requesting to start recording...");
+            socket.emit('start_recording');
+        }
+
+        function stopRecording() {
+            console.log("Requesting to stop recording...");
+            socket.emit('stop_recording');
+        }
+
+        // Handle recording status
+        socket.on('recording_status', function(data) {
+            const statusElement = document.getElementById('recording-status');
+            if (data.status === 'started') {
+                statusElement.textContent = `Recording Status: Recording to ${data.filename}`;
+            } else if (data.status === 'stopped') {
+                statusElement.textContent = 'Recording Status: Not Recording';
+            }
+        });
+
     </script>
 </body>
 </html>

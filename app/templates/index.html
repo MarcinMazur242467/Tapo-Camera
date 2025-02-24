@@ -83,7 +83,6 @@
          // Motion Status Update
 socket.on('motion_status', function(data) {
     var motionStatus = document.getElementById('motion-status');
-    console.log(data.motion);
     if (data.motion) {
         motionStatus.textContent = "Motion Status: Motion Detected";
         motionStatus.classList.add('active');

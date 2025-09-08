@@ -1,127 +1,358 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Video Stream</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
     <style>
+        body {
+            background: #181c24;
+            color: #e0e0e0;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .header {
+            background: #232837;
+            padding: 24px 0 16px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #7ecfff;
+        }
+        .container {
+            max-width: 700px;
+            margin: 32px auto;
+            background: #232837;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+            padding: 32px 24px 24px 24px;
+        }
         #video-feed {
             width: 100%;
+            max-width: 900px;
             height: auto;
+            min-height: 540px;
+            min-width: 640px;
             display: block;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            background: #10131a;
         }
         #motion-status {
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            background-color: red;
-            display: inline-block;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            background: #e74c3c;
+            display: block;
+            text-align: center;
+            padding: 10px 22px;
+            margin: 18px auto 24px auto;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+            transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+            max-width: 400px;
         }
         #motion-status.active {
-            background-color: green;
+            background: #27ae60;
+        }
+        #recording-status.recording {
+            color: #fff;
+            background: #e74c3c;
+            border-radius: 8px;
+            padding: 10px 22px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: 0 2px 12px rgba(231,76,60,0.3);
+            margin-top: 18px;
+            letter-spacing: 1px;
+            animation: pulse 1.2s infinite;
+        }
+        #recording-status.recorded {
+            color: #fff;
+            background: #27ae60;
+            border-radius: 8px;
+            padding: 10px 22px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: 0 2px 12px rgba(39,174,96,0.3);
+            margin-top: 18px;
+            letter-spacing: 1px;
+        }
+        .browse-recordings-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: none;
+            color: #7ecfff;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            border: none;
+            margin: 0 auto;
+            padding: 0;
+            transition: color 0.2s;
+        }
+        .browse-recordings-link.big-bold {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+        .browse-recordings-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231,76,60,0.7); }
+            70% { box-shadow: 0 0 0 16px rgba(231,76,60,0); }
+            100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
+        }
+        .section-title {
+            margin-top: 32px;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            color: #7ecfff;
+            font-weight: 700;
+        }
+        .controls, .recording-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .controls {
+            flex-direction: column;
+            align-items: center;
+        }
+        .arrow-row {
+            display: flex;
+            gap: 12px;
+        }
+        .btn, button {
+            background: #222b3a;
+            color: #7ecfff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover, button:hover {
+            background: #7ecfff;
+            color: #181c24;
+            box-shadow: 0 2px 8px rgba(126,207,255,0.15);
+        }
+        .btn-info {
+            background: #34495e;
+            color: #7ecfff;
+        }
+        .btn-info:hover {
+            background: #7ecfff;
+            color: #232837;
+        }
+        #recording-status {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #f1c40f;
+            font-weight: 600;
+        }
+        @media (max-width: 800px) {
+            .container {
+                margin: 16px;
+                padding: 18px 6vw 18px 6vw;
+            }
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 8px 2vw 8px 2vw;
+            }
+            .header h1 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Real-Time Video Stream</h1>
-    <canvas id="video-feed" width="640" height="480"></canvas>
+    <div class="header">
+        <h1>TP-Link TAPO Real-Time Video Streaming</h1>
+    </div>
+    <div class="container">
+    <canvas id="video-feed" width="1000" height="440"></canvas>
+        <div id="motion-status">Motion Status: No Motion</div>
 
-    <div id="motion-status">Motion Status: No Motion</div>
 
-    <h2>Camera Controls</h2>
-<div>
-    <button onclick="moveCamera('up')">Up</button><br>
-    <button onclick="moveCamera('left')">Left</button>
-    <button onclick="moveCamera('right')">Right</button><br>
-    <button onclick="moveCamera('down')">Down</button>
-</div>
+        <div class="section-title" style="text-align:center;"> PTZ Controls</div>
+        <div class="controls" style="align-items:center;">
+            <button onclick="moveCamera('up')">▲ Up</button>
+            <div class="arrow-row">
+                <button onclick="moveCamera('left')">◀ Left</button>
+                <button onclick="moveCamera('right')">Right ▶</button>
+            </div>
+            <button onclick="moveCamera('down')">▼ Down</button>
+        </div>
+        <div id="ptz-warning" style="display:none;text-align:center;margin:10px 0 18px 0;">
+            <span style="background:linear-gradient(90deg,#ffb347,#ffcc80);color:#a85b00;padding:10px 18px;border-radius:8px;font-weight:700;box-shadow:0 1px 6px rgba(255,180,71,0.15);font-size:1.1rem;display:inline-block;">⚠️ Maximum range of motion reached</span>
+        </div>
 
-<h2>Recording Controls</h2>
-<div>
-    <button onclick="startRecording()">Start Recording</button>
-    <button onclick="stopRecording()">Stop Recording</button>
-</div>
+        <hr style="border: none; border-top: 2px solid #444; margin: 32px 0 18px 0;">
+        <div style="width: 100%; text-align: center; margin-bottom: 18px;">
+            <a href="/recordings" class="browse-recordings-link big-bold" title="Browse Recordings">
+                <span style="font-size:2rem;vertical-align:middle;">📁</span>
+                Browse Recordings
+            </a>
+        </div>        
+        <div class="recording-controls" style="flex-direction: column; align-items: flex-start; gap: 0;">
+            <div style="width: 100%; display: flex; gap: 12px; justify-content: center;">
+                <button onclick="startRecording()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="vertical-align:middle; margin-right:6px;"><circle cx="8" cy="8" r="7"/></svg>
+                    Start Recording
+                </button>
+                <button onclick="stopRecording()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="vertical-align:middle; margin-right:6px;"><rect x="3" y="3" width="10" height="10" rx="2"/></svg>
+                    Stop Recording
+                </button>
+            </div>
+        </div>
+        <p id="recording-status" style="display:none;"></p>
+    </div>
 
-<p id="recording-status">Recording Status: Not Recording</p>
-
-    <script>    
+    <script>
         var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
         // WebSocket connection
         socket.on('connect', function() {
-            console.log("Connected to the server via WebSocket");
         });
 
         // WebSocket disconnection
         socket.on('disconnect', function() {
-            console.log("Disconnected from the server. Reconnecting...");
             socket.connect();  // Reconnect
         });
 
         socket.on('video_frame', function(data) {
-        
-            var img = new Image();  // Utwórz nowy obiekt obrazu
-            img.src = 'data:image/jpeg;base64,' + data.frame;  // Ustaw źródło obrazu (base64)
-        
+            var img = new Image();
+            img.src = 'data:image/jpeg;base64,' + data.frame;
             img.onload = function() {
-                // Po załadowaniu obrazu narysuj go na canvas
                 var canvas = document.getElementById('video-feed');
                 var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);  // Wyczyść canvas
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);  // Narysuj obraz
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             };
-        
             img.onerror = function(e) {
                 console.error("Error loading image:", e);
             };
         });
 
-         // Motion Status Update
-socket.on('motion_status', function(data) {
-    var motionStatus = document.getElementById('motion-status');
-    if (data.motion) {
-        motionStatus.textContent = "Motion Status: Motion Detected";
-        motionStatus.classList.add('active');
-    } else {
-        motionStatus.textContent = "Motion Status: No Motion";
-        motionStatus.classList.remove('active');
-    }
-});
-        
-        function moveCamera(direction) {
-            console.log("Sending direction:", direction);
-        
+        // Motion Status Update
+        socket.on('motion_status', function(data) {
+            var motionStatus = document.getElementById('motion-status');
+            if (data.motion) {
+                motionStatus.textContent = "Motion Status: Motion Detected";
+                motionStatus.classList.add('active');
+            } else {
+                motionStatus.textContent = "Motion Status: No Motion";
+                motionStatus.classList.remove('active');
+            }
+        });
+
+
+
+        // --- PTZ Controls: Press-and-hold with throttling and step ---
+        let ptzInterval = null;
+        let ptzActive = false;
+        const PTZ_STEP = 2; // Smoother, smaller step
+        const PTZ_INTERVAL = 80; // ms between commands
+
+        function moveCamera(direction, step=PTZ_STEP) {
             fetch('/move', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ direction: direction })
+                body: JSON.stringify({ direction: direction, step: step })
             })
-            .then(response => {
-                console.log("Server response:", response);
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                if (data && data.error && data.error.toLowerCase().includes('range')) {
+                    showPTZWarning();
+                } else {
+                    hidePTZWarning();
+                }
             })
             .catch(error => {
-                console.error('Error:', error);
+                // Optionally show warning on error
             });
+        }
+
+        function startPTZ(direction) {
+            if (ptzActive) return;
+            ptzActive = true;
+            moveCamera(direction);
+            ptzInterval = setInterval(() => moveCamera(direction), PTZ_INTERVAL);
+        }
+
+        function stopPTZ() {
+            ptzActive = false;
+            if (ptzInterval) clearInterval(ptzInterval);
+            ptzInterval = null;
+        }
+
+        // Attach press-and-hold to PTZ buttons after DOM loads
+        window.addEventListener('DOMContentLoaded', function() {
+            const ptzButtons = [
+                { id: null, dir: 'up',   selector: "button[onclick*=\'up\']" },
+                { id: null, dir: 'down', selector: "button[onclick*=\'down\']" },
+                { id: null, dir: 'left', selector: "button[onclick*=\'left\']" },
+                { id: null, dir: 'right',selector: "button[onclick*=\'right\']" }
+            ];
+            ptzButtons.forEach(btn => {
+                const el = document.querySelector(btn.selector);
+                if (!el) return;
+                el.addEventListener('mousedown', () => startPTZ(btn.dir));
+                el.addEventListener('touchstart', (e) => { e.preventDefault(); startPTZ(btn.dir); });
+                el.addEventListener('mouseup', stopPTZ);
+                el.addEventListener('mouseleave', stopPTZ);
+                el.addEventListener('touchend', stopPTZ);
+            });
+            // Keyboard arrow support
+            document.addEventListener('keydown', function(e) {
+                if (ptzActive) return;
+                if (e.key === 'ArrowUp') startPTZ('up');
+                if (e.key === 'ArrowDown') startPTZ('down');
+                if (e.key === 'ArrowLeft') startPTZ('left');
+                if (e.key === 'ArrowRight') startPTZ('right');
+            });
+            document.addEventListener('keyup', function(e) {
+                if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)) stopPTZ();
+            });
+        });
+
+        function showPTZWarning() {
+            document.getElementById('ptz-warning').style.display = '';
+        }
+        function hidePTZWarning() {
+            document.getElementById('ptz-warning').style.display = 'none';
         }
 
         // Recording controls
         function startRecording() {
-            console.log("Requesting to start recording...");
             socket.emit('start_recording');
         }
 
         function stopRecording() {
-            console.log("Requesting to stop recording...");
             socket.emit('stop_recording');
         }
 
@@ -129,12 +360,17 @@ socket.on('motion_status', function(data) {
         socket.on('recording_status', function(data) {
             const statusElement = document.getElementById('recording-status');
             if (data.status === 'started') {
-                statusElement.textContent = `Recording Status: Recording to ${data.filename}`;
+                statusElement.textContent = '● Recording';
+                statusElement.classList.add('recording');
+                statusElement.classList.remove('recorded');
+                statusElement.style.display = '';
             } else if (data.status === 'stopped') {
-                statusElement.textContent = 'Recording Status: Not Recording';
+                statusElement.textContent = 'Video Recorded';
+                statusElement.classList.remove('recording');
+                statusElement.classList.add('recorded');
+                statusElement.style.display = '';
             }
         });
-
     </script>
 </body>
 </html>

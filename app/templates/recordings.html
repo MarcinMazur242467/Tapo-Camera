@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordings</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #181c24;
+            color: #e0e0e0;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .header {
+            background: #232837;
+            padding: 24px 0 16px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #7ecfff;
+        }
+        .container {
+            max-width: 700px;
+            margin: 32px auto;
+            background: #232837;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+            padding: 32px 24px 24px 24px;
+        }
+        .list-group-item {
+            background: #232837;
+            color: #e0e0e0;
+            border: 1px solid #232837;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn, button {
+            background: #222b3a;
+            color: #7ecfff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            margin-right: 6px;
+        }
+        .btn:hover, button:hover {
+            background: #7ecfff;
+            color: #181c24;
+            box-shadow: 0 2px 8px rgba(126,207,255,0.15);
+        }
+        .btn-primary {
+            background: #34495e;
+            color: #7ecfff;
+        }
+        .btn-primary:hover {
+            background: #7ecfff;
+            color: #232837;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #7ecfff;
+            color: #232837;
+        }
+        .btn-secondary {
+            background: #232837;
+            color: #7ecfff;
+        }
+        .btn-secondary:hover {
+            background: #7ecfff;
+            color: #232837;
+        }
+        .alert-danger {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .modal-content {
+            background: #232837;
+            color: #e0e0e0;
+            border-radius: 12px;
+        }
+        .modal-title {
+            color: #7ecfff;
+        }
+        @media (max-width: 800px) {
+            .container {
+                margin: 16px;
+                padding: 18px 6vw 18px 6vw;
+            }
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 8px 2vw 8px 2vw;
+            }
+            .header h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="header">
+        <h2>Recordings</h2>
+    </div>
+    <div class="container">
+        {% if error %}
+            <div class="alert alert-danger">Error: {{ error }}</div>
+        {% endif %}
+        {% if files %}
+            <ul class="list-group">
+            {% for f in files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ f }}</span>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <button class="btn btn-success btn-sm me-2" onclick="playVideo('{{ f }}')">Play</button>
+                        <a href="/recordings/download/{{ f }}" class="btn btn-primary btn-sm" download>Download</a>
+                        <form method="POST" action="/recordings/delete/{{ f }}" style="display:inline; margin:0; padding:0;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this recording?');">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No recordings found.</p>
+        {% endif %}
+
+        <!-- Video Modal -->
+        <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="videoModalLabel">Playback</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <video id="recordingPlayer" width="100%" height="auto" controls>
+                            <source id="videoSource" src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/" class="btn btn-secondary mt-3">Back to Main Page</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function playVideo(filename) {
+        var videoUrl = '/recordings/play/' + encodeURIComponent(filename);
+        var video = document.getElementById('recordingPlayer');
+        var source = document.getElementById('videoSource');
+        source.src = videoUrl;
+        video.load();
+        var modal = new bootstrap.Modal(document.getElementById('videoModal'));
+        modal.show();
+    }
+    </script>
+</body>
+</html>

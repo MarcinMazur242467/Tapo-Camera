@@ -9,9 +9,12 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret!'
 
+
     # Rejestrujemy blueprint z trasami
     from . import routes
     app.register_blueprint(routes.bp)
+    # Register recordings browser blueprint
+    routes.register_recordings_blueprint(app)
 
     # Inicjalizujemy SocketIO
     socketio.init_app(app)

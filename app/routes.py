@@ -20,19 +20,88 @@ def load_config(config_file='config.json'):
         with open(config_file, 'r') as file:
             return json.load(file)
     except FileNotFoundError:
-        print("config.json not found. Please create config.json in the project root directory.")
-        raise
+        # Return empty config instead of raising so app can show setup screen
+        print("config.json not found. Setup screen will be shown to configure camera.")
+        return {}
 
 
 from flask import current_app
 config = load_config()
 
-camera_ip = config['host']
-camera_user = config['user']
-camera_password = config['password']
-camera_url = config['rtsp_url']
 
-camera = Tapo(camera_ip, camera_user, camera_password)
+# Helper to check config validity
+def is_config_valid(cfg: dict) -> bool:
+    required = ['host', 'user', 'password', 'rtsp_url']
+    return all(k in cfg and cfg[k] for k in required)
+
+
+# Camera variables will be initialized lazily if config is valid
+camera_ip = config.get('host')
+camera_user = config.get('user')
+camera_password = config.get('password')
+camera_url = config.get('rtsp_url')
+
+camera = None
+camera_connected = False
+last_connection_reason = None
+last_connection_hint = None
+if is_config_valid(config) and Tapo is not None:
+    try:
+        camera = Tapo(camera_ip, camera_user, camera_password)
+    except Exception as e:
+        print(f"Warning: could not initialize Tapo camera: {e}")
+
+
+def check_camera_connection(timeout=5):
+    """Check overall camera connectivity.
+    Returns (connected: bool, reason: str).
+    - Verifies config is present
+    - Verifies Tapo API credentials (if Tapo available)
+    - Verifies RTSP stream can be opened
+    """
+    global camera, camera_connected, camera_ip, camera_user, camera_password, camera_url
+
+    # Check config
+    if not is_config_valid(config):
+        return False, "config_invalid"
+
+    # Check RTSP stream first (fast fail if RTSP is invalid)
+    try:
+        cap = cv2.VideoCapture(camera_url)
+        start = time.time()
+        # Give a short window to open
+        while time.time() - start < timeout:
+            if cap.isOpened():
+                # Try reading a frame to ensure the stream is delivering data
+                success, frame = cap.read()
+                cap.release()
+                if success and frame is not None and frame.size > 0:
+                    # RTSP is delivering frames; proceed to Tapo auth check
+                    rtsp_ok = True
+                    break
+                else:
+                    return False, "rtsp_no_frame"
+            time.sleep(0.2)
+        else:
+            cap.release()
+            return False, "rtsp_unreachable"
+    except Exception as e:
+        print(f"RTSP check error: {e}")
+        return False, "rtsp_error"
+
+    # At this point RTSP is OK. Now check Tapo API credentials (if pytapo available)
+    if Tapo is None:
+        # If pytapo is not installed, treat RTSP-only as sufficient connectivity
+        return False, "ok_rtsp_only"
+    else:
+        try:
+            camera = Tapo(camera_ip, camera_user, camera_password)
+            # If we reach here, both RTSP and Tapo auth are OK
+            camera_connected = True
+            return True, "ok"
+        except Exception as e:
+            print(f"Tapo auth failed after RTSP OK: {e}")
+            return False, "tapo_auth_failed"
 
 socket = SocketIO()
 bp = Blueprint('main', __name__)
@@ -57,6 +126,20 @@ os.makedirs(output_dir, exist_ok=True)
 def register_recordings_blueprint(app):
     app.register_blueprint(recordings_bp)
     app.config['OUTPUT_DIR'] = output_dir
+
+
+# Perform initial connectivity check on import/startup
+try:
+    ok, reason = check_camera_connection()
+    last_connection_reason = reason
+    # Provide TAPO-specific hint when auth fails
+    if reason == 'tapo_auth_failed':
+        last_connection_hint = ('After an unsuccessful login the TAPO API may block connections to the camera for 1800 seconds. '
+                                'Try using username: "admin" and password: "TAPO_CLOUD_PASSWD" to log in to the API.')
+    if not ok:
+        print(f"Camera connectivity check failed: {reason}. The web UI will show the setup/error page.")
+except Exception as e:
+    print(f"Exception during initial camera check: {e}")
 
 def start_recording_thread(frame_size, fps=15):
     """Starts the recording in a separate thread."""
@@ -232,6 +315,13 @@ def motion_detection_task(frame):
 def move_camera():
 
     try:
+        # Ensure camera is configured before attempting PTZ movement
+        if not camera_connected:
+            # Return an error that client can show or trigger a redirect to setup page
+            resp = {"error": "Couldn't connect with camera. Check config.json.", "reason": last_connection_reason}
+            if last_connection_hint:
+                resp['hint'] = last_connection_hint
+            return jsonify(resp), 400
         data = request.get_json()
         
 
@@ -280,9 +370,17 @@ def handle_stop_recording():
     
 @bp.route('/')
 def index():
+    # If config is invalid or camera not initialized, show the setup page
+    if not camera_connected:
+        # Show the connection error page which instructs user to check config.json
+        return render_template('connection_error.html', reason=(last_connection_reason or "Unknown error"), hint=(last_connection_hint or ""))
     return render_template('index.html')
 
 def start_video_stream():
+    # Guard: only start stream if camera is configured
+    if not camera_connected:
+        print("Video stream not started: couldn't connect to camera.")
+        return
     thread = Thread(target=capture_frames)
     thread.daemon = True
     thread.start()

@@ -1,0 +1,253 @@
+Prompt for Engeneering Thisis:
+
+Cool I am writing my thisis paper the topic is: "Wykorzystanie oprogramowania Open-Source do
+współpracy z kamerami TP-Link TAPO"
+
+"Kamery Tapo firmy TP-Link obsługiwane są przez zamknięte oprogramowanie działające na platformie Android/Ios - celem pracy jest opracowanie rozwiązania pozwalającego na użycie kamer w środowisku działającym w oparciu o rozwiązania Open Source. Wykonane rozwiązanie powinno umożliwiać pełną kontrolę kamer (wykrywanie ruchu) oraz umożliwiać zapis nagrania wraz z odtwarzaniem w czasie rzeczywistym. "
+
+I already created table of content to writing a paper:
+
+
+Streszczenie
+Wstęp
+Cel i zakres pracy
+1.	Wprowadzenie technologiczne Kamer IP 
+1.1	Zastosowanie Kamer IP
+1.1.1 Monitoring
+1.1.2 Kontrola Dostępu
+1.1.3 Zarządzanie Procesami
+1.1.3 “Technologie Smart”
+1.1.4 Analiza Danych
+1.2 Buodwa
+1.2.1 Hardware - Fizyczna Budowa
+o	Matryca
+o	Mikrofon
+o	Zasilanie
+o	układ scalony 
+	CPU
+	Pamięć
+	Network
+1.2.2 Software - Firmware
+1.3 Zasada działania
+1.3.1 Zarządzanie Zasilaniem
+POE
+zasilanie
+1.3.2 Komunikacja
+Wifi
+HTTP
+1.3.3 Provisioning
+1.3.4 Proces przetwarzania obrazu
+1.3.5 Proces przetwarzania dzwieku
+1.3.6 Streamowanie
+1.4 Jakie funkcje zapewnia?
+1.4.1 Obrót PTZ
+1.4. 2 Wykrywanie obiektów i zdarzen - AI
+1.4.3 Wykrywanie ruchu
+1.4.4 Noktowizja i termowizja
+1.4.5 Dwukierunkowe audio
+1.4.6 Zapis danych
+1.4.7 Integracja z Inteligentntymi Systemami
+1.4.8 Powiadomienia push
+1.5 Jakie ma ograniczenia?
+1.5.1 Przepustowość i zużycie danych
+1.5.2 Zależność od sieci
+1.5.3 Bezpieczeństwo
+1.5.4 Zależność od producenta / Chmura
+1.6 Wnioski Analiza
+2.	Analiza Kamery TP-Link TAPO C200
+3.	Metodologia i implementacja rozwiązania
+3.1 Metoda Badawcza
+3.1.1 Double Diamond
+3.1.2 Projektowanie i implementacja
+3.2 Założenia
+3.3 Zastosowane narzędzia i technologie
+3.3.1 Język Programowania
+python 3.13
+3.3.2 Konteneryzacja
+Docker
+3.3.3 Package Manager
+uv
+3.3.4 Audio, Video i Streaming:
+ffmpeg
+OpenCV
+MoviePy
+3.3.5 Web Server
+flask
+WebSocket's
+3.3.6 Kontrola Kamery
+PyTapo
+3.4 Architektura rozwiązania
+3.5 Proces implementacji
+3.5.1 Serwer http
+3.5.2 Implementacja połączenia z kamerą
+3.5.3 Client
+3.5.4 API
+3.5.5 Przechwytywanie audio
+3.5.6 Przechwytywanie video
+3.5.7 Sterowanie kamerą - PTZ
+3.5.8 Algorytm wykrywania ruchu
+3.5.9 Nagrywanie
+3.5.10 Zapis
+3.6 Podsumowanie
+4.	Testowanie i Analiza wyników
+4.1 Zakres Testów
+4.2 Środowisko Testowe
+4.3 Wyniki testów i Analiza
+4.4 Podsumowanie
+Wnioski Koncowe
+ Podsumowanie pracy
+ 
+Aditional context:
+- U want you to be as much of an engeneer as you can be. 
+- I will need to asign citations and academic sources from books and articles so make sure that you base your answares on those
+- Scope: IP cameras and IoT + web aplications 
+- Field: IoT and Web Apps
+- it focuses on Tp-Link tapo Cameras
+- Formal academic, persuasive, exploratory, critical, technical, or interdisciplinary.
+- it is going to be in Polish language
+- Target audience: general audience
+- Forbidden sources: (e.g., blogs, fabricated citations, )
+- Permited sources: academic papers, google schoolar, books, profesional implementation
+Sentence length preference: (e.g., under 25 words, varied, concise)
+What to avoid: (e.g., avoid speculative claims, don’t overstate causality, no filler text)
+- it is my engeneering thisis for polish university Politechnika Lodzka WFTIMS and my major is "Applied Computer Science"
+Based of that context I want you to do some things for me that will help me. Keep it in mind. 
+
+Also here is a reference map for citations:
+Wstęp / Cel i zakres pracy
+
+General IoT, IP cameras, and security surveys.
+
+Refs:
+
+Alaba, F.A., et al. (2017). Internet of Things security: A survey. Future Generation Computer Systems. https://pmc.ncbi.nlm.nih.gov/articles/PMC7506579/
+
+Minerva, R., Biru, A., & Rotondi, D. (2021). A survey on IoT platforms: Communication, security, and more. Computer Networks. https://www.sciencedirect.com/science/article/am/pii/S1389128621001444
+
+1. Wprowadzenie technologiczne Kamer IP i analiza Kamery TAPO C200
+1.1 Zastosowanie Kamer IP (Monitoring, Smart Tech, Data Analysis)
+
+Refs:
+
+Al-Fuqaha, A., et al. (2015). The Security of IP-Based Video Surveillance Systems. https://pmc.ncbi.nlm.nih.gov/articles/PMC7506579/
+
+Bou-Harb, E., et al. (2024). Unmasking vulnerabilities by a pioneering approach to Smart IoT cameras. https://www.sciencedirect.com/science/article/pii/S1110866524000768
+
+Apthorpe, N., et al. (2018). IoT Security: An End-to-End View and Case Study. https://arxiv.org/abs/1805.05853
+
+Hardware (Matryca, CPU, Network, etc.)
+
+Refs:
+
+TP-Link official datasheet/manuals (primary).
+
+General IoT hardware architecture overviews (book or textbook references — you’ll need to supplement here).
+
+Software / Firmware / Komunikacja
+
+Refs:
+
+Abdalla, P. (2020). Testing IoT Security: The Case Study of an IP Camera. PDF https://www.researchgate.net/publication/342184780_Testing_IoT_Security_The_Case_Study_of_an_IP_Camera
+
+Antonakakis, M., et al. (2023). PETIoT: PEnetration Testing the Internet of Things. https://arxiv.org/abs/2302.04900
+
+Funkcje (PTZ, AI detection, night vision, etc.)
+
+Refs:
+
+TP-Link TAPO whitepapers/manuals.
+
+Ariefianto, A., et al. (2022). Vulnerability Assessment and Penetration Testing on IP Cameras (TP-Link Tapo C200). https://arxiv.org/abs/2202.06597
+
+Ograniczenia (Bandwidth, Cloud dependency, Security)
+
+Refs:
+
+Apthorpe, N., et al. (2018). IoT Security: An End-to-End View and Case Study. https://arxiv.org/abs/1805.05853
+
+Howard University (2025). Your IP Camera Can Be Abused for Payments. PDF https://cea.howard.edu/sites/cea.howard.edu/files/2025-06/Your_IP_Camera_Can_Be_Abused_for_Payments_A_Study_of_IoT_Exploitation_for_Financial_Services_Leveraging_Shodan_and_Criminal_Infrastructures%20%282%29.pdf
+
+2. Analiza Kamery TP-Link TAPO C200
+
+Refs:
+
+Ariefianto, A., et al. (2022). Vulnerability Assessment and Penetration Testing on IP Cameras (TP-Link Tapo C200). https://arxiv.org/abs/2202.06597
+
+Antonakakis, M., et al. (2023). PETIoT: PEnetration Testing the Internet of Things. https://arxiv.org/abs/2302.04900?utm_source=chatgpt.com
+
+3. Metodologia i implementacja rozwiązania
+Metoda badawcza (Double Diamond)
+
+Refs:
+
+Design Council UK. (2005). The Double Diamond Design Process Model. https://www.designcouncil.org.uk/our-resources/the-double-diamond/
+
+Narzędzia i technologie (Python, Docker, ffmpeg, Flask, etc.)
+
+Refs:
+
+Li, J., et al. (2015). Design and Implementation of a Real-Time Video Stream Analysis System Based on FFMPEG. https://www.researchgate.net/publication/271482423_Design_and_Implementation_of_a_Real-Time_Video_Stream_Analysis_System_Based_on_FFMPEG?utm_source=chatgpt.com
+
+Samanta, D., et al. (2016). Low Delay Video Streaming on the Internet of Things Using Raspberry Pi. https://www.researchgate.net/publication/308387547_Low_Delay_Video_Streaming_on_the_Internet_of_Things_Using_Raspberry_Pi
+
+Architektura rozwiązania
+
+Refs:
+
+Bentaleb, A., et al. (2022). A holistic survey of multipath wireless video streaming. https://www.sciencedirect.com/science/article/pii/S1084804522002223
+
+4. Testowanie i Analiza wyników
+Zakres Testów & Środowisko
+
+Wyniki i Analiza
+
+
+
+
+Wnioski
+
+
+Refs:
+
+
+Minerva, R., et al. (2021). A survey on IoT platforms. https://www.sciencedirect.com/science/article/am/pii/S1389128621001444
+
+VS Code Project:
+
+This is a Python-based web application for controlling and viewing TP-Link Tapo cameras.
+
+Project Summary
+Name: Tapo Camera Integration
+Objective: To provide a web interface for interacting with TP-Link Tapo cameras on a local network.
+Core Functionality:
+Live video streaming to a web browser.
+Pan/Tilt (PTZ) camera controls.
+Displaying motion detection status.
+Starting and stopping video recordings.
+A web page to browse saved recordings.
+Authentication: The application connects to the camera using credentials specified in a config.json file. The README.md notes two possible authentication methods: using local camera credentials or using admin with the TP-Link cloud password.
+Technical Stack
+Backend: Python 3.13, Flask
+Real-time Communication: Flask-SocketIO with Eventlet for handling the video stream.
+Camera Interaction:
+pytapo: A Python library for controlling Tapo cameras (PTZ, settings).
+opencv-python: Used for capturing and processing the RTSP video stream.
+Frontend: HTML templates managed by Flask (Jinja2), with JavaScript for SocketIO communication and UI interaction.
+Dependency Management: uv is used with pyproject.toml and a uv.lock file for reproducible dependency installation.
+Containerization: A Dockerfile is provided for building and running the application in a Docker container.
+Project Structure
+run.py: The main entry point to start the Flask application.
+app: The main Flask application module.
+__init__.py: Initializes the Flask app, Flask-SocketIO, and loads configuration.
+routes.py: Defines the main web routes, including the index page (/) and the video feed socket events.
+recordings_routes.py: Defines routes for viewing and managing recordings.
+camera.py: Contains the Camera class that interfaces with pytapo for controls and opencv for the video stream.
+config.py: Handles loading settings from config.json.
+templates/: Contains the Jinja2 HTML templates for the UI (index.html, recordings.html).
+config.json: A user-provided configuration file (ignored by git) containing camera credentials and IP address.
+pyproject.toml: Defines project metadata and dependencies.
+uv.lock: A lockfile for reproducible builds with uv.
+Dockerfile: Defines the steps to build a Docker image for the application.
+README.md: Contains detailed instructions for setup, configuration, and troubleshooting.
+video_stream.py: A standalone script that appears to be for reverse-engineering or directly accessing the camera's encrypted stream via HTTP, separate from the main Flask application's RTSP method. It uses pwntools and Crypto for decryption.
+Paper: Contains LaTeX source files for what appears to be a thesis or academic paper about this project.

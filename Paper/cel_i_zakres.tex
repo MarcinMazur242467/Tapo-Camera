@@ -1,2 +1,43 @@
+\newpage
+\phantomsection
 \section*{Cel i zakres pracy}
-\addcontentsline{toc}{section}{Cel i zakres pracy}\label{chap:Cel_i_zakres_pracy}
+\addcontentsline{toc}{section}{Cel i zakres pracy}
+
+\subsection*{Cel}
+
+\textbf{Celem głównym} niniejszej pracy inżynierskiej jest opracowanie oraz implementacja kompletnego, modułowego rozwiązania programistycznego opartego wyłącznie na \textbf{otwartym oprogramowaniu (Open Source)}, które umożliwi pełne wykorzystanie funkcjonalności kamery IP TP-Link Tapo C200 w środowisku lokalnym i uniezależni użytkownika od zamkniętej infrastruktury producenta (problem \textit{vendor lock-in}).\\
+
+Osiągnięcie celu głównego jest weryfikowane poprzez realizację następujących, \textbf{konkretnych i mierzalnych} celów szczegółowych:
+
+\begin{itemize}
+    \item Umożliwienie stabilnego \textbf{wyświetlania obrazu w czasie rzeczywistym} w przeglądarce internetowej. Weryfikacja nastąpi poprzez pomiar \textbf{opóźnienia strumienia wideo ($Latency$)} oraz wskaźnika \textbf{klatek na sekundę (FPS)}, celem osiągnięcia płynności monitoringu porównywalnej z dedykowanymi systemami VMS.
+    \item Zdalne sterowanie kluczowymi funkcjami kamery, w tym \textbf{ruchem PTZ} (Pan/Tilt/Zoom), za pośrednictwem własnego API.
+    \item Implementacja \textbf{algorytmu wykrywania ruchu}, z poziomu serwera hostującego. Weryfikacja nastąpi poprzez analizę \textbf{efektywności algorytmów} mierzoną w kategoriach czasu przetwarzania klatki oraz minimalizacji błędów detekcji.
+    \item Zbudowanie rozwiązania w oparciu o technologię \textbf{Docker} w celu zapewnienia \textbf{skalowalności systemu} oraz \textbf{reprodukowalności środowiska} na platformach mikserwerowych IoT (np. Raspberry Pi).
+    \item Implementacja funkcjonalności \textbf{zapisu nagrań wideo} na serwerze hostującym z możliwością ich późniejszego \textbf{odtwarzania} poprzez interfejs webowy.
+    \item Osiągnięcie architektury gotowej do \textbf{integracji} z otwartymi platformami automatyki domowej (np. \texttt{Home Assistant}).
+\end{itemize}
+
+\newpage
+
+\subsection*{Zakres Pracy}
+
+Zakres pracy inżynierskiej obejmuje projektowanie, implementację oraz testowanie modułowego systemu klient-serwer. Praca stanowi odpowiedź na problem \textit{vendor lock-in} w segmencie kamer IoT, uzasadniając wybór tematu rosnącą potrzebą na otwarte i bezpieczne systemy zarządzania danymi.
+
+\subsubsection*{Aspekty objęte zakresem pracy}
+
+\begin{itemize}
+    \item Projekt trójwarstwowej architektury kontenerowej (Docker) dla warstwy dostępu do sprzętu, logiki biznesowej (Flask/WebSocket's) oraz warstwy prezentacji (Web Client).
+    \item Wykorzystanie biblioteki \texttt{PyTapo} do obsługi nieudokumentowanego API komend sterujących kamery (PTZ, tryb nocny, aktywacja usług).
+    \item Praca skupia się na przechwytywaniu jednokierunkowego strumienia wideo i audio. Implementacja pełnej komunikacji zwrotnej w czasie rzeczywistym jest \textbf{poza zakresem} projektu.
+    \item Przeprowadzenie \textbf{testów wydajnościowych} skupiających się na \textbf{zużyciu zasobów (CPU/RAM)} hosta podczas ciągłej analizy strumienia wideo.
+\end{itemize}    
+
+\subsubsection*{Wyłączenia z zakresu pracy}
+
+W celu zachowania osiągalności i weryfikowalności celów w ramach pracy inżynierskiej, poniższe aspekty zostały wykluczone, ze względu na ich złożoność badawczą lub techniczną:
+
+\begin{itemize}
+    \item Protokół inicjalizacji - \textbf{Provisioning} - kamery Tapo w trybie Access Point (AP) jest nieudokumentowany, szyfrowany i opiera się na wymianie kluczy sesyjnych, co wymaga weryfikacji po stronie chmury TP-Link. Odtworzenie tego protokołu jest zadaniem na poziomie projektu badawczego i \textbf{wykracza poza ramy niniejszej pracy}. W konsekwencji, praca zakłada, że \textbf{kamera została jednorazowo skonfigurowana w sieci Wi-Fi} przy użyciu oficjalnej aplikacji mobilnej.
+    \item Implementacja modeli \textbf{uczenia maszynowego} (np. rozpoznawanie twarzy, klasyfikacja obiektów - YOLO), ze względu na wysokie wymagania obliczeniowe i złożoność czasową, \textbf{została wykluczona}. Praca koncentruje się na detekcji ruchu opartej na różnicy klatek (\texttt{OpenCV}).
+   \end{itemize}

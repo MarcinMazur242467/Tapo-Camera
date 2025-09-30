@@ -1,4 +1,15 @@
+\newpage
+\phantomsection
 \section*{Wstęp}
-\addcontentsline{toc}{section}{Wstęp}\label{chap:Wstęp}
-\markboth{WSTĘP}{WSTĘP}
-Wstęp 
+\addcontentsline{toc}{section}{Wstęp}
+
+Globalny rynek systemów monitoringu przechodzi dynamiczną transformację, będącą efektem rozwoju \textbf{Internetu Rzeczy (IoT)}. Kamery IP stały się wszechobecnym elementem infrastruktury cyfrowej, pełniąc funkcje od podstawowego dozoru, aż po zaawansowaną analizę danych. Równolegle z postępem technologicznym, pojawia się wyzwanie o charakterze inżynierskim, jakim jest dominacja systemów opartych na \textbf{zamkniętym oprogramowaniu (proprietary software)}.\\
+
+
+
+Wybór tematu pracy wynika z konieczności zaadresowania problemu \textbf{vendor lock-in} w kontekście popularnych kamer konsumenckich, na przykładzie urządzeń TP-Link Tapo. Zjawisko to, polegające na uzależnieniu pełnej funkcjonalności sprzętu od infrastruktury chmurowej i aplikacji mobilnej producenta, ogranicza \textbf{dostepność danych} oraz \textbf{możliwości integracji} z otwartymi systemami automatyki i bezpieczeństwa. Problem ten jest szczególnie istotny w kontekście \textbf{cyber bezpieczeństwa}, gdzie zamknięte i często nieaudytowane firmware może stanowić potencjalny wektor ataku.\\
+
+
+W pracy zastosowano \textbf{metodykę Double Diamond}, dzieląc proces projektowy na fazy eksploracji i definiowania problemu (analiza protokołów kamery) oraz fazy rozwoju i dostarczania rozwiązania. Warstwa aplikacyjna została zaimplementowana w języku \textbf{Python 3.13} z wykorzystaniem \textbf{konteneryzacji Docker} dla zapewnienia izolacji i wysokiej \textbf{reprodukowalności środowiska}. Komunikacja z kamerą odbywa się poprzez bibliotekę \textbf{PyTapo}, natomiast przetwarzanie strumienia wideo RTSP realizują narzędzia \textbf{FFmpeg} i \textbf{OpenCV}. Taki zestaw narzędzi, osadzony w architekturze serwera \textbf{Flask} z protokołem \textbf{WebSocket's}, pozwolił na stworzenie systemu o niskim opóźnieniu (\textit{low latency}).\\
+
+Niniejsza praca ma za zadanie stanowić nie tylko dowód kompetencji inżynierskich, ale także praktyczny wkład w rozwój otwartych technologii w dziedzinie monitoringu IoT.

@@ -1,2 +1,34 @@
-\section{Rozdział 2}\label{chap:drugi}
-Rozdział 2 
+\section{Analiza Kamery TP-Link TAPO C200}
+\label{sec:analiza_tapo}
+
+Kamera TP-Link Tapo C200 stanowi reprezentatywny przykład współczesnego, konsumenckiego urządzenia klasy \textbf{IoT (Internet of Things)} przeznaczonego do monitoringu wewnętrznego. Ze względu na swoją popularność i uwarunkowania techniczne, jest idealnym studium przypadku dla oceny możliwości integracji z \textbf{otwartymi ekosystemami (Open Source)}, co stanowi główny cel niniejszej pracy inżynierskiej.
+
+\subsection{Specyfikacja techniczna i architektura funkcjonalna}
+\label{subsec:specyfikacja_tapo}
+
+Kamera Tapo C200 to urządzenie typu \textbf{Pan/Tilt (PTZ)}, oferujące zdalny obrót w zakresie horyzontalnym ($360^\circ$) oraz wertykalnym. Kluczowe parametry w kontekście przetwarzania obrazu i wydajności sieciowej bazują na oficjalnej specyfikacji technicznej:
+
+\begin{itemize}
+    \item \textbf{Maksymalna Rozdzielczość:} $1080\text{P HD}$ ($1920\text{x}1080 \text{ px}$).
+    \item \textbf{Klatkaż:} $30 \text{ fps}$, co zapewnia płynny obraz.
+    \item \textbf{Kompresja Wideo:} H.264, standard przemysłowy dla efektywnego przesyłania wideo.
+    \item \textbf{Łączność Bezprzewodowa:} $2.4 \text{ GHz Wi-Fi}$ (IEEE $802.11\text{b/g/n}$).
+    \item \textbf{Pamięć Lokalna:} Slot microSD (do $512 \text{ GB}$), umożliwiający zapis nagrań w trybie offline.
+\end{itemize}
+
+Architektura urządzenia jest oparta na wbudowanym układzie \textbf{SoC (System-on-a-Chip)}, który odpowiada za przetwarzanie obrazu, sprzętową kompresję H.264 oraz obsługę protokołów sieciowych.
+
+\subsection{Analiza Protokołów Komunikacyjnych i Potencjału Integracji Open Source}
+\label{subsec:protokoly_tapo}
+
+Mimo przynależności do zamkniętego ekosystemu, kamera udostępnia kluczowe protokoły umożliwiające \textbf{lokalną, niezależną integrację}, co jest warunkiem koniecznym dla realizacji niniejszego projektu:
+\begin{enumerate}
+    \item \textbf{RTSP (Real-Time Streaming Protocol):} Protokół ten jest obsługiwany przez kamerę i umożliwia pobieranie surowego strumienia wideo i audio w czasie rzeczywistym. Jest to fundament, który pozwala na wykorzystanie otwartych narzędzi, takich jak FFmpeg i OpenCV, do analizy i przetwarzania obrazu poza zamkniętą aplikacją.
+    \item \textbf{ONVIF (Open Network Video Interface Forum):} Choć standard jest obsługiwany, pełna funkcjonalność i integracja często wymaga dodatkowych działań inżynierskich, zwłaszcza w zakresie sterowania urządzeniem.
+    \item \textbf{Protokół Komend Własnościowych:} Sterowanie zaawansowanymi funkcjami, w tym \textbf{PTZ (Pan/Tilt/Zoom)}, odbywa się za pomocą zamkniętego API komunikującego się w sieci lokalnej. Osiągnięcie \textbf{pełnej kontroli} w środowisku Open Source wymagało analizy i inżynierii wstecznej tego protokołu (co zrealizowano w bibliotece PyTapo).
+\end{enumerate}
+
+\subsection{Wbudowane funkcje AI a Wyzwanie Open Source (Vendor Lock-in)}
+\label{subsec:funkcje_ai_tapo}
+
+Kamera Tapo C200 posiada wbudowane funkcje \textbf{AI Detection}, takie jak wykrywanie osób i płaczu dziecka, realizowane za pomocą uczenia maszynowego wewnątrz urządzenia. Ograniczeniem jest tu zjawisko \textbf{Vendor Lock-in}, które blokuje dostęp użytkownika do parametrów konfiguracyjnych tych funkcji oraz do surowych danych o zdarzeniach, uniemożliwiając personalizację i rozszerzenie funkcjonalności. W konsekwencji, niezbędne staje się opracowanie własnego, otwartego i konfigurowalnego algorytmu detekcji ruchu na serwerze hostującym, co jest kluczowym elementem pracy.

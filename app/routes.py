@@ -97,6 +97,8 @@ def check_camera_connection(timeout=5):
         try:
             camera = Tapo(camera_ip, camera_user, camera_password)
             # If we reach here, both RTSP and Tapo auth are OK
+             # Simple API call to verify auth
+             camera.setMicrophone()
             camera_connected = True
             return True, "ok"
         except Exception as e:

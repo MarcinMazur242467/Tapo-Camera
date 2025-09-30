@@ -1,7 +1,26 @@
+\section*{Wnioski Końcowe}
+\addcontentsline{toc}{section}{Wnioski Końcowe}
 
-\section*{Wnioski}
-\addcontentsline{toc}{section}{Wnioski}
-wnioski
-\section*{Podsumowanie}
-\addcontentsline{toc}{section}{Podsumowanie}
-podsumowanie
+Niniejsza praca inżynierska zrealizowała postawiony cel główny, tworząc kompletne i modułowe rozwiązanie Open Source dla kamer TP-Link Tapo C200. Projekt udowodnił, że bariera \textbf{vendor lock-in} może być skutecznie przełamana za pomocą inżynierii wstecznej protokołów własnościowych i integracji sprawdzonych narzędzi (Docker, FFmpeg, OpenCV).
+
+Osiągnięte wyniki potwierdzają:
+\begin{enumerate}
+    \item Pełną i stabilną kontrolę PTZ z poziomu autorskiego interfejsu.
+    \item Możliwość lokalnego streamingu wideo z minimalnymi opóźnieniami.
+    \item Skuteczną implementację autorskiej detekcji ruchu, oferującej większą konfigurowalność niż wbudowane funkcje kamery.
+\end{enumerate}
+
+\subsection*{Kierunki dalszego rozwoju}
+\addcontentsline{toc}{subsection}{Kierunki dalszego rozwoju}
+
+Dalsze prace mogą koncentrować się na:
+\begin{itemize}
+    \item Integracji z protokołami Smart Home (np. MQTT) w celu komunikacji z systemami takimi jak Home Assistant.
+    \item Zastosowaniu WebRTC (Web Real-Time Communication) w celu dalszej redukcji opóźnień streamingu.
+    \item Wdrożeniu lekkich modeli uczenia maszynowego (np. YOLOv5 Nano) dla zaawansowanej detekcji obiektów, wykorzystujących akcelerację sprzętową GPU hosta.
+\end{itemize}
+
+\subsection*{Podsumowanie pracy}
+\addcontentsline{toc}{subsection}{Podsumowanie pracy}
+
+Opracowany prototyp stanowi w pełni funkcjonalną i otwartą alternatywę dla zamkniętego ekosystemu producenta, oferując użytkownikowi pełną suwerenność nad gromadzonymi danymi i możliwością rozbudowy systemu.

@@ -5,6 +5,7 @@ description = "A TP-Link TAPO camera streaming application using Flask and Flask
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "crypto>=1.4.1",
     "eventlet>=0.40.3",
     "flask>=3.1.2",
     "flask-cors>=6.0.1",
@@ -12,6 +13,7 @@ dependencies = [
     "markup>=0.2.2",
     "moviepy>=2.2.1",
     "opencv-python>=4.12.0.88",
+    "pwn>=1.0",
     "pytapo>=3.3.49",
     "werkzeug>=3.1.3",
 ]

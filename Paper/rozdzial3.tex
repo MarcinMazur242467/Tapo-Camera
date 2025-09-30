@@ -1,2 +1,51 @@
-\section{Rozdział 3}\label{chap:Rozdział3}
-Rozdział 3 
+\section{Metodologia i implementacja rozwiązania}
+\label{sec:metodologia}
+
+\subsection{Metoda Badawcza}
+\label{subsec:metoda_badawcza}
+\subsubsection{Double Diamond}
+Model ten umożliwia skuteczną transformację problemu (zamknięty ekosystem Tapo) w konkretne rozwiązanie inżynierskie.
+\subsubsection{Projektowanie i implementacja}
+
+\subsection{Założenia}
+\label{subsec:zalozenia}
+Główne założenia dotyczą pracy w sieci lokalnej (LAN), minimalizacji opóźnień oraz 100\% wykorzystania narzędzi Open Source.
+
+\subsection{Zastosowane narzędzia i technologie}
+\label{subsec:narzedzia}
+\subsubsection{Język Programowania: Python 3.13}
+\subsubsection{Konteneryzacja: Docker}
+Zapewnia hermetyzację środowiska i reprodukowalność wdrożenia na różnych platformach sprzętowych.
+\subsubsection{Package Manager: uv}
+\subsubsection{Audio, Video i Streaming}
+\begin{itemize}
+    \item ffmpeg
+    \item OpenCV
+    \item MoviePy
+\end{itemize}
+\subsubsection{Web Server}
+\begin{itemize}
+    \item Flask
+    \item WebSocket's
+\end{itemize}
+\subsubsection{Kontrola Kamery: PyTapo}
+
+\subsection{Architektura rozwiązania}
+\label{subsec:architektura}
+Przedstawienie architektury opartej na trzech warstwach: dostępu do kamery, logiki biznesowej (Flask/SocketIO) i warstwie prezentacji.
+
+\subsection{Proces implementacji}
+\label{subsec:proces_implementacji}
+\subsubsection{Serwer http}
+\subsubsection{Implementacja połączenia z kamerą}
+\subsubsection{Client}
+\subsubsection{API}
+\subsubsection{Przechwytywanie audio}
+\subsubsection{Przechwytywanie wideo}
+\subsubsection{Sterowanie kamerą - PTZ}
+\subsubsection{Algorytm wykrywania ruchu}
+\subsubsection{Nagrywanie}
+\subsubsection{Zapis}
+
+\subsection{Podsumowanie}
+\label{subsec:podsumowanie_roz3}

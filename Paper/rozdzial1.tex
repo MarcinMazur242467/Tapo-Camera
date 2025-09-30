@@ -1,2 +1,158 @@
-\section{Rozdzaił 1}\label{chap:pierwszy}
-~\cite{Smith:2019} Strona
+\section{Wprowadzenie technologiczne Kamer IP}
+\label{sec:wprowadzenie_kamer_ip}% BRAK PUSTYCH LINII TUTAJ
+Rozdział ten ma za zadanie ugruntować zrozumienie złożoności systemów kamer IP i precyzyjnie wskazać na luki w otwartych standardach, które musi wypełnić zaprojektowane rozwiązanie. \ 
+
+Współczesne systemy monitoringu wizyjnego oparte na kamerach IP stanowią kluczowy element infrastruktury bezpieczeństwa, wykraczając funkcjonalnością poza tradycyjne, analogowe systemy CCTV. Ewolucja ta jest ściśle związana z rozwojem sieci komputerowych i koncepcji IoT, gdzie urządzenia peryferyjne uzyskują zdolność do przetwarzania i autonomicznej komunikacji w ramach sieci. Z inżynierskiego punktu widzenia, kamera IP jest zaawansowanym systemem wbudowanym, łączącym optykę, cyfrowe przetwarzanie sygnału, kompresję danych oraz kompleksowy stos protokołów sieciowych.
+\subsection{Zastosowanie Kamer IP}\label{subsec:zastosowanie_kamer_ip}
+Na podstawie raportu Hanwha Vision z 2025 roku, można wyróżnić następujące, główne obszary zastosowań kamer IP \cite{Hanwha:2025}:
+\begin{longtable}{|p{0.25\linewidth}|p{0.71\linewidth}|} 
+    \caption{Główne obszary zastosowań kamer IP (na podstawie raportu Hanwha Vision, 2025)}
+    \label{tab:zastosowanie_kamer_ip} \\ % Komenda caption musi być na początku longtable
+
+    \hline
+    \textbf{Obszar zastosowania} & \textbf{Przykłady wykorzystania kamer IP} \\
+    \hline
+    \endhead % Koniec nagłówka tabeli, powtarzanego na każdej stronie
+
+    Bezpieczeństwo publiczne & Monitorowanie ulic, placów, obiektów strategicznych; automatyczne wykrywanie zagrożeń i incydentów.\\
+    \hline
+    Transport i logistyka & Monitoring lotnisk, dworców, portów; analiza przepływu pasażerów; automatyczne rozpoznawanie tablic rejestracyjnych.\\
+    \hline
+    Przemysł & Kontrola procesów produkcyjnych, wykrywanie awarii maszyn, nadzór nad pracownikami i bezpieczeństwem pracy.\\
+    \hline
+    Handel detaliczny & Zapobieganie kradzieżom, analiza zachowań klientów, optymalizacja układu sklepu.\\
+    \hline
+    Edukacja & Zwiększanie bezpieczeństwa uczniów i nauczycieli, kontrola dostępu do budynków szkolnych.\\
+    \hline
+    Ochrona zdrowia & Nadzór nad pacjentami i personelem, zabezpieczenie pomieszczeń szpitalnych, kontrola dostępu do stref wrażliwych.\\
+    \hline
+    Smart City & Analiza ruchu drogowego, inteligentne sterowanie sygnalizacją świetlną, planowanie urbanistyczne na podstawie danych z kamer.\\
+    \hline
+\end{longtable}\
+
+Zastosowanie monitoringu wizyjnego opartego na kamerach IP jest obecnie wielosektorowe i dynamiczne. Urządzenia te, integrujące funkcje sensora i procesora danych, stały się podstawą \textbf{systemów analitycznych} w kluczowych obszarach gospodarki i bezpieczeństwa.
+W kontekście dalszego rozwoju monitoringu wizyjnego, szczególne znaczenie zyskuje \textbf{sztuczna inteligencja (AI)} i \textbf{uczenie maszynowe (ML)}. Nowoczesne algorytmy pozwalają na automatyczną detekcję zagrożeń, eliminację fałszywych alarmów oraz identyfikację i śledzenie obiektów w czasie rzeczywistym. Integracja tych zaawansowanych technik z \textbf{otwartym oprogramowaniem} — co jest celem niniejszej pracy — otwiera drogę do stworzenia bardziej zaawansowanych, konfigurowalnych i niezależnych narzędzi wspierających bezpieczeństwo oraz analitykę zdarzeń.
+Rozwój kamer IP, szczególnie w kontekście inteligentnego monitoringu, jest ściśle powiązany z ewolucją \textbf{Narzędzi Kognitywnych (Cognitive Tools)}.
+
+Narzędzia kognitywne w monitoringu wizyjnym działają na zasadzie mechanizmów inferencji, które imitują procesy decyzyjne i percepcyjne ludzkiego mózgu. Umożliwiają one systemom na przechodzenie od prostej detekcji ruchu do \textbf{zrozumienia kontekstu i intencji} obserwowanych zdarzeń \cite{Fan:Stanford:2020}. Dzięki temu, system monitorujący może automatycznie filtrować szum wizualny i koncentrować uwagę na zdarzeniach o wysokim prawdopodobieństwie zagrożenia lub anomalii. Technologie te transformują surowe dane wideo w zorganizowane i użyteczne metadane, co jest fundamentalne dla automatyki i bezpieczeństwa.
+W przeciwieństwie do tradycyjnej detekcji ruchu opartej na różnicy pikseli (algorytm \textit{frame differencing}), nowoczesne systemy wizyjne wykorzystują głębokie sieci neuronowe (DNN) do zaawansowanej analizy obrazu. Pozwala to na realizację funkcji inżynierskich o wysokiej wartości:
+\\
+Efektywna Analiza Danych wymaga interoperacyjności. Jest to główny powód, dla którego w niniejszej pracy inżynierskiej dąży się do uwolnienia strumienia danych z kamery Tapo C200. Tylko otwarty dostęp do strumienia wideo i metadanych umożliwia ich integrację z zaawansowanymi platformami analitycznymi (np. platformy IoT, systemy Business Intelligence), co jest niemożliwe w zamkniętych ekosystemach producentów.
+Kamera IP, połączona z narzędziami kognitywnymi (AI), przestaje być pasywnym urządzeniem rejestrującym, a staje się aktywnym sensorem generującym \textbf{metadane strukturalne}.
+ W kontekście systemów Big Data, strumień wideo jest przetworzony w chmurze lub na urządzeniu brzegowym (\textit{edge computing}) na użyteczne informacje, takie jak:
+\begin{enumerate}
+    \item Liczba wykrytych obiektów (ludzie, pojazdy), ich zagęszczenie (tzw. \textit{heatmaps}) oraz czas przebywania w określonej strefie (np. w handlu detalicznym) znane jako \textbf{dane statystyczne}.
+    \item Analiza ścieżek ruchu, wykrywanie nietypowych wzorców zachowania (np. bieganie w strefie zakazu, pozostawienie bagażu) oraz trendów sezonowych w natężeniu ruchu znane jako \textbf{dane behawioralne}.
+    \item Na podstawie historycznych i bieżących danych, systemy AI mogą przewidywać prawdopodobne incydenty. Przykładowo, zwiększone zagęszczenie osób w metrze w połączeniu z nietypowymi wzorcami ruchu może wygenerować alarm o potencjalnym zatorze lub wypadku, zanim ten nastąpi, nazywane \textbf{analityką predykcyjną}.
+\end{enumerate}
+
+
+\subsubsection{Monitoring}
+\label{subsubsec:monitoring}
+
+Podstawowym i historycznym zastosowaniem kamery IP jest \textbf{nadzór wizyjny (monitoring)}. W odróżnieniu od analogowego CCTV, monitoring oparty na protokole internetowym umożliwia przesyłanie strumienia wideo wysokiej rozdzielczości (np. 1080p w Tapo C200) oraz metadanych poprzez standardowe sieci LAN/WLAN. Z technicznego punktu widzenia, monitoring realizowany jest poprzez ciągłe kodowanie wideo (standardy H.264/H.265), strumieniowanie za pomocą protokołów czasu rzeczywistego (\textbf{RTSP}) oraz zapis cyfrowy na nośnikach lokalnych (microSD, serwer NVR) lub w chmurze. Zaawansowane funkcje, takie jak \textbf{PTZ (Pan-Tilt-Zoom)}, dają inżynierom możliwość dynamicznego dostosowania pola widzenia i śledzenia obiektów bez ingerencji fizycznej, co jest kluczowe w monitorowaniu dużych obszarów (np. hal magazynowych) \cite{Al-Fuqaha:2015}.
+
+\subsubsection{Kontrola Dostępu}
+\label{subsubsec:kontrola_dostepu}
+
+Kamery IP są coraz częściej integrowane z systemami \textbf{Kontroli Dostępu (Access Control Systems - ACS)}. Ich rola wykracza poza zwykłe weryfikowanie tożsamości. Dzięki wykorzystaniu AI, kamery stają się kluczowym sensorem w bezdotykowej autoryzacji. Przykłady zastosowań inżynierskich obejmują:
+\begin{enumerate}
+    \item \textbf{Rozpoznawanie Twarzy (Facial Recognition):} Zastosowanie algorytmów głębokiego uczenia do identyfikacji i weryfikacji osób uprawnionych, automatycznie odblokowując wejścia.
+    \item \textbf{Rozpoznawanie Tablic Rejestracyjnych (ANPR):} Automatyczne zezwalanie na wjazd pojazdów do strzeżonych stref (np. parkingów pracowniczych) na podstawie analizy obrazu z kamery.
+\end{enumerate}
+Takie rozwiązania minimalizują ryzyko błędów ludzkich i zwiększają bezpieczeństwo poprzez ciągłe logowanie zdarzeń wejścia i wyjścia, stanowiąc integralną część zabezpieczeń fizycznych i sieciowych \cite{Bou-Harb:2024}.
+
+\subsubsection{Zarządzanie Procesami Biznesowymi}
+\label{subsubsec:zarzadzanie_procesami_biznesowymi}
+
+Wykorzystanie kamer IP w zarządzaniu procesami (\textbf{Business Process Management - BPM}) koncentruje się na optymalizacji operacyjnej poprzez zbieranie danych o efektywności i bezpieczeństwie pracy. W sektorach takich jak produkcja i logistyka, kamery są używane do:
+\begin{enumerate}
+    \item \textbf{Kontroli Jakości (Quality Assurance - QA):} Monitorowanie linii produkcyjnych w celu automatycznego wykrywania defektów, niezgodności montażu lub nieprawidłowej sekwencji działań.
+    \item \textbf{Optymalizacji Przepływu Pracy (\textit{Workflow Optimization}):} Analiza ścieżek ruchu pracowników i pojazdów w celu identyfikacji wąskich gardeł w magazynach i centrach dystrybucyjnych.
+\end{enumerate}
+Te zastosowania wymagają wysokiej precyzji metadanych i niskiego opóźnienia, co stawia wysokie wymagania przed \textbf{algorytmami analizy brzegowej (Edge Analytics)}, które muszą działać na poziomie procesora kamery lub serwera lokalnego \cite{Abdalla:2020}.
+
+\subsubsection{Technologie Smart}
+\label{subsubsec:technologie_smart}
+
+Kamery IP są fundamentalnym elementem \textbf{ekosystemów Smart Home i Smart City}. W tych kontekstach, kamera pełni rolę czujnika behawioralnego, dostarczając danych do zautomatyzowanych systemów decyzyjnych. W budownictwie inteligentnym, Tapo C200, podobnie jak inne urządzenia IoT, jest zintegrowana za pomocą protokołów API z platformami takimi jak \textbf{Google Assistant i Amazon Alexa} (jak wskazano w dokumentacji Tapo). Przykłady zastosowań to:
+\begin{enumerate}
+    \item \textbf{Automatyzacja Zdarzeniowa:} Detekcja ruchu lub dźwięku (np. wykrywanie płaczu dziecka w Tapo C200) uruchamia inne urządzenia (np. włącza światło, wysyła alert do systemu zarządzania domem).
+    \item \textbf{Zarządzanie Energią:} Wykrycie braku obecności osób w pomieszczeniu może prowadzić do automatycznego obniżenia temperatury lub wyłączenia niepotrzebnych urządzeń, przyczyniając się do zwiększenia efektywności energetycznej.
+\end{enumerate}
+Ten obszar ilustruje potrzebę \textbf{interoperacyjności}, która jest blokowana przez zamknięte protokoły chmurowe, co stanowi główną motywację dla niniejszej pracy inżynierskiej.
+
+\subsubsection{Analiza Danych}
+\label{subsubsec:analiza_danych}
+
+Kamera IP, połączona z narzędziami kognitywnymi (AI), przestaje być pasywnym urządzeniem rejestrującym, a staje się aktywnym sensorem generującym \textbf{metadane strukturalne}. W kontekście systemów Big Data, strumień wideo jest intensywnie przetwarzany, stanowiąc bazę dla analityki w czasie rzeczywistym i prognozowania zdarzeń.
+
+Efektywne wykorzystanie danych wizyjnych do celów analitycznych obejmuje trzy główne poziomy inżynierskie:
+\begin{enumerate}
+    \item \textbf{Ekstrakcja Danych Statystycznych:} Dotyczy pomiarów ilościowych, takich jak gęstość obiektów, liczenie przepływu (\textit{flow counting}) oraz generowanie map ciepła (\textit{heatmaps}) \cite{Minerva:2021}.
+    \item \textbf{Analiza Behawioralna i Wzorce Trendów:} Identyfikacja nietypowych sekwencji zdarzeń, które mogą sugerować incydent bezpieczeństwa (np. pozostawiony pakunek) \cite{Al-Fuqaha:2015}.
+    \item \textbf{Analityka Predykcyjna (Predictive Analytics):} Przewidywanie potencjalnych przyszłych zdarzeń na podstawie historycznych i bieżących metadanych. Wymaga to integracji i walidacji danych z wielu źródeł IoT \cite{Alaba:2017}.
+\end{enumerate}
+
+Możliwość pełnej i niezależnej \textbf{Analizy Danych (Data Analytics)} jest ściśle powiązana z problemem \textit{vendor lock-in}. Uwolnienie strumienia z kamery Tapo C200 jest podstawowym warunkiem inżynierskim dla realizacji zaawansowanej analityki danych.
+\subsection{Budowa}
+\label{subsec:budowa}
+\subsubsection{Budowa Fizyczna - Hardware}
+\label{subsubsec:hardware}
+\begin{itemize}
+    \item Matryca
+    \item Mikrofon
+    \item Zasilanie
+    \item Układ scalony (SoC)
+    \begin{itemize}
+        \item CPU
+        \item Pamięć
+        \item Network
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Oprogramowanie - Software}
+\label{subsubsec:firmware}
+
+\subsection{Zasada działania}
+\label{subsec:zasada_dzialania}
+\subsubsection{Zarządzanie Zasilaniem}
+\label{subsubsec:zarzadzanie_zasilaniem}
+\begin{itemize}
+    \item POE
+    \item Zasilanie
+\end{itemize}
+
+\subsubsection{Komunikacja}
+\label{subsubsec:komunikacja}
+\begin{itemize}
+    \item Wifi
+    \item HTTP
+\end{itemize}
+
+\subsubsection{Provisioning}
+\subsubsection{Proces przetwarzania obrazu}
+\subsubsection{Proces przetwarzania dźwięku}
+\subsubsection{Streamowanie}
+
+\subsection{Funkcje}
+\label{subsec:funkcje}
+\subsubsection{Obrót PTZ}
+\subsubsection{Wykrywanie obiektów i zdarzeń - AI}
+\subsubsection{Wykrywanie ruchu}
+\subsubsection{Noktowizja i termowizja}
+\subsubsection{Dwukierunkowe audio}
+\subsubsection{Zapis danych}
+\subsubsection{Integracja z Inteligentnymi Systemami}
+\subsubsection{Powiadomienia push}
+
+\subsection{Ograniczenia}
+\label{subsec:ograniczenia}
+Ograniczenia wynikające z technologii i modelu biznesowego producentów.
+\subsubsection{Przepustowość i zużycie danych}
+\subsubsection{Zależność od sieci}
+\subsubsection{Bezpieczeństwo}
+\subsubsection{Zależność od producenta / Chmura}
+
+\subsection{Wnioski - Analiza}
+\label{subsec:wnioski_analiza}

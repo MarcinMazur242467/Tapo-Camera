@@ -1,15 +1,59 @@
 \section{Metodologia i implementacja rozwiązania}
 \label{sec:metodologia}
 
-\subsection{Metoda Badawcza}
-\label{subsec:metoda_badawcza}
-\subsubsection{Double Diamond}
-Model ten umożliwia skuteczną transformację problemu (zamknięty ekosystem Tapo) w konkretne rozwiązanie inżynierskie.
-\subsubsection{Projektowanie i implementacja}
+Poprzednie rozdziały dokonały teoretycznej dekonstrukcji technologii kamer IP (Rozdział~1) oraz przeprowadziły szczegółową analizę studium przypadku — kamery TP-Link Tapo C200 (Rozdział~2). Analiza ta zidentyfikowała kluczowy problem badawczy: fundamentalny konflikt między potencjałem sprzętowym urządzenia a ograniczeniami narzuconymi przez zamknięty ekosystem producenta (tzw. \textbf{„vendor lock-in”}).
 
-\subsection{Założenia}
-\label{subsec:zalozenia}
-Główne założenia dotyczą pracy w sieci lokalnej (LAN), minimalizacji opóźnień oraz 100\% wykorzystania narzędzi Open Source.
+Niniejszy rozdział przechodzi od teorii do praktyki. Stanowi on techniczną odpowiedź na zdefiniowane wyzwania. Opisany zostanie kompletny proces projektowy i wdrożeniowy – od wybranej metodyki badawczej, przez architekturę systemu, aż po szczegóły implementacji poszczególnych komponentów. Celem jest budowa autorskiego, otwartego rozwiązania programistycznego, które uwalnia pełen potencjał kamery i realizuje cele postawione w niniejszej pracy.
+
+\subsection{Metodyka Projektowa}
+\label{subsec:metodyka_projektowa}
+
+\subsubsection{Double Diamond}
+\label{subsubsec:double_diamond}
+
+Model Double Diamond (Podwójny Diament) jest ustrukturyzowaną metodyką procesową, pierwotnie sformalizowaną przez British Design Council w 2005 roku. Stanowi ona mapę procesu projektowego, którego celem jest efektywne nawigowanie od wstępnej idei do wdrożonego rozwiązania, przy jednoczesnym zarządzaniu złożonością i niepewnością.
+
+Metodyka ta jest fundamentalna dla współczesnego projektowania (w tym inżynierii oprogramowania, projektowania produktów i usług) i bazuje na koncepcji myślenia projektowego (Design Thinking).
+
+Nazwa modelu pochodzi od jego wizualnej reprezentacji jako dwóch sąsiadujących rombów („diamentów”). Każdy diament reprezentuje sekwencję dwóch typów myślenia:
+
+\begin{itemize}
+    \item \textbf{Myślenie Rozbieżne:} Faza otwierania „diamentu”. Polega na eksploracji, generowaniu dużej liczby pomysłów, zbieraniu szerokiego spektrum danych i powstrzymywaniu się od oceny. Celem jest poszerzenie perspektywy i zrozumienie kontekstu.
+    
+    \item \textbf{Myślenie Zbieżne:} Faza zamykania „diamentu”. Polega na syntezie, analizie, krytycznej ocenie i podejmowaniu decyzji. Celem jest zawężenie opcji i wyłonienie konkretnego kierunku działania.
+\end{itemize}
+
+Model zakłada, że aby opracować właściwe rozwiązanie, należy najpierw dogłębnie zrozumieć i zdefiniować właściwy problem.
+
+\subsubsection*{Diament 1: Przestrzeń Problemu}
+Celem tego etapu jest zidentyfikowanie i precyzyjne zdefiniowanie kluczowego problemu, który ma zostać rozwiązany.
+
+\begin{enumerate}
+    \item \textbf{Faza Odkrywania (Discover) – Dywergencja} Jest to faza intensywnych badań (research) i empatii. Zespół projektowy wychodzi poza własne założenia, aby zrozumieć rzeczywisty kontekst użytkownika i zidentyfikować jego niezaspokojone potrzeby.
+    
+    \item \textbf{Faza Definiowania (Define) – Konwergencja} W tej fazie następuje synteza danych zebranych podczas Odkrywania. Zespół filtruje i analizuje informacje, szukając wzorców i kluczowych wyzwań. Celem jest przekształcenie rozproszonych obserwacji w klarowną i mierzalną definicję problemu.
+\end{enumerate}
+
+\subsubsection*{Diament 2: Przestrzeń Rozwiązania}
+
+\begin{enumerate}
+    \setcounter{enumi}{2} % Kontynuacja numeracji od 3
+    \item \textbf{Faza Rozwijania (Develop) – Dywergencja} Mając jasno zdefiniowany problem, zespół ponownie przechodzi w tryb dywergencyjny, aby wygenerować jak najszerszy wachlarz potencjalnych rozwiązań. Kładzie się nacisk na ilość, a nie jakość, oraz na kreatywność i multidyscyplinarność.
+    
+    \item \textbf{Faza Dostarczania (Deliver) – Konwergencja} Jest to ostatnia faza, skupiona na testowaniu, walidacji i iteracyjnym udoskonalaniu wybranych koncepcji. Rozwiązania są poddawane rygorystycznym testom z udziałem użytkowników, aby zidentyfikować błędy i obszary do poprawy, a następnie zawęzić wybór do jednego, optymalnego rozwiązania gotowego do wdrożenia.
+\end{enumerate}
+
+\subsubsection*{Zastosowanie modelu w niniejszej pracy}
+
+\begin{enumerate}
+    \item \textbf{Odkrywanie (Discover):} Tę fazę reprezentuje research przeprowadzony w Rozdziałach 1 i 2. Zbadano ogólne działanie kamer IP, a następnie przeanalizowano specyfikę Tapo C200, identyfikując jej otwarte porty (RTSP) oraz zamknięte, własnościowe API do sterowania PTZ.
+    
+    \item \textbf{Definiowanie (Define):} Zebrane informacje skumulowano do konkretnego problemu: \textbf{vendor lock-in} uniemożliwia lokalną kontrolę. Celem pracy stało się więc stworzenie lokalnego systemu dającego pełną kontrolę.
+    
+    \item \textbf{Rozwój (Develop):} W tej fazie nastąpił brainstorming nad architekturą rozwiązania. Rozważano różne technologie i narzędzia (np. gotowe platformy vs. własna aplikacja). Zdecydowano się na elastyczny stos technologiczny, który umożliwi realizację wszystkich celów.
+    
+    \item \textbf{Dostarczanie (Deliver):} Wybrano konkretne, optymalne rozwiązanie: aplikacja webowa oparta na Pythonie, Flasku i WebSockets, wykorzystująca bibliotekę PyTapo (do sterowania) oraz OpenCV i FFmpeg (do analizy wideo), całość hermetyzowana w Dockerze. Implementacja tego rozwiązania stanowi dalszą część niniejszego rozdziału.
+\end{enumerate}
 
 \subsection{Zastosowane narzędzia i technologie}
 \label{subsec:narzedzia}

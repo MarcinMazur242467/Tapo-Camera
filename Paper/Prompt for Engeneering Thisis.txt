@@ -250,4 +250,4 @@ uv.lock: A lockfile for reproducible builds with uv.
 Dockerfile: Defines the steps to build a Docker image for the application.
 README.md: Contains detailed instructions for setup, configuration, and troubleshooting.
 video_stream.py: A standalone script that appears to be for reverse-engineering or directly accessing the camera's encrypted stream via HTTP, separate from the main Flask application's RTSP method. It uses pwntools and Crypto for decryption.
-Paper: Contains LaTeX source files for what appears to be a thesis or academic paper about this project.
+Paper: Contains LaTeX source files for what appears to be a thesis or academic paper about this project.1

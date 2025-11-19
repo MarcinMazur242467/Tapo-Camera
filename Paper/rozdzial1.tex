@@ -46,19 +46,16 @@ Narzędzia kognitywne w monitoringu wizyjnym działają na zasadzie mechanizmów
 Umożliwiają one systemom na przechodzenie od prostej detekcji ruchu do \textbf{zrozumienia kontekstu i intencji} obserwowanych zdarzeń \cite{Fan:Stanford:2020}.
 Dzięki temu, system monitorujący może automatycznie filtrować szum wizualny i koncentrować uwagę na zdarzeniach o wysokim prawdopodobieństwie zagrożenia lub anomalii.
 Technologie te transformują surowe dane wideo w zorganizowane i użyteczne metadane, co jest fundamentalne dla automatyki i bezpieczeństwa.
-W przeciwieństwie do tradycyjnej detekcji ruchu opartej na różnicy pikseli (algorytm \textit{frame differencing}), nowoczesne systemy wizyjne wykorzystują głębokie sieci neuronowe (DNN) do zaawansowanej analizy obrazu.
-Pozwala to na realizację funkcji inżynierskich o wysokiej wartości:
-\\
-Efektywna Analiza Danych wymaga interoperacyjności.
+\\\\
+    Efektywna Analiza Danych wymaga interoperacyjności.
 Jest to główny powód, dla którego w niniejszej pracy inżynierskiej dąży się do uwolnienia strumienia danych z kamery Tapo C200.
 Tylko otwarty dostęp do strumienia wideo i metadanych umożliwia ich integrację z zaawansowanymi platformami analitycznymi (np. platformy IoT, systemy Business Intelligence), co jest niemożliwe w zamkniętych ekosystemach producentów.
-Kamera IP, połączona z narzędziami kognitywnymi (AI), przestaje być pasywnym urządzeniem rejestrującym, a staje się aktywnym sensorem generującym \textbf{metadane strukturalne}.
-W kontekście systemów Big Data, strumień wideo jest przetworzony w chmurze lub na urządzeniu brzegowym (\textit{edge computing}) na użyteczne informacje, takie jak:
+Kamera IP, połączona z narzędziami kognitywnymi (AI), przestaje być pasywnym urządzeniem rejestrującym, a staje się aktywnym sensorem generującym \textbf{metadane strukturalne}:
 \begin{enumerate}
     \item Liczba wykrytych obiektów (ludzie, pojazdy), ich zagęszczenie (tzw. \textit{heatmaps}) oraz czas przebywania w określonej strefie (np. w handlu detalicznym) znane jako \textbf{dane statystyczne}.
 \item Analiza ścieżek ruchu, wykrywanie nietypowych wzorców zachowania (np. bieganie w strefie zakazu, pozostawienie bagażu) oraz trendów sezonowych w natężeniu ruchu znane jako \textbf{dane behawioralne}.
-\item Na podstawie historycznych i bieżących danych, systemy AI mogą przewidywać prawdopodobne incydenty.
-Przykładowo, zwiększone zagęszczenie osób w metrze w połączeniu z nietypowymi wzorcami ruchu może wygenerować alarm o potencjalnym zatorze lub wypadku, zanim ten nastąpi, nazywane \textbf{analityką predykcyjną}.
+\item \textbf{Analityką predykcyjna}, ktora na podstawie historycznych i bieżących danych, systemy AI mogą przewidywać prawdopodobne incydenty.
+Przykładowo, zagęszczenie osób w metrze w połączeniu z nietypowymi wzorcami ruchu może wygenerować alarm o potencjalnym zatorze lub wypadku, zanim ten nastąpi.
 \end{enumerate}
 
 
@@ -68,7 +65,7 @@ Przykładowo, zwiększone zagęszczenie osób w metrze w połączeniu z nietypow
 Podstawowym i historycznym zastosowaniem kamery IP jest \textbf{nadzór wizyjny (monitoring)}.
 W odróżnieniu od analogowego CCTV, monitoring oparty na protokole internetowym umożliwia przesyłanie strumienia wideo wysokiej rozdzielczości (np. 1080p w Tapo C200) oraz metadanych poprzez standardowe sieci LAN/WLAN.
 Z technicznego punktu widzenia, monitoring realizowany jest poprzez ciągłe kodowanie wideo (standardy H.264/H.265), strumieniowanie za pomocą protokołów czasu rzeczywistego (\textbf{RTSP}) oraz zapis cyfrowy na nośnikach lokalnych (microSD, serwer NVR) lub w chmurze.
-Zaawansowane funkcje, takie jak \textbf{PTZ (Pan-Tilt-Zoom)}, dają inżynierom możliwość dynamicznego dostosowania pola widzenia i śledzenia obiektów bez ingerencji fizycznej, co jest kluczowe w monitorowaniu dużych obszarów (np. hal magazynowych) \cite{Al-Fuqaha:2015}.
+Zaawansowane funkcje, takie jak \textbf{PTZ (Pan-Tilt-Zoom)}, dają inżynierom możliwość dynamicznego dostosowania pola widzenia i śledzenia obiektów bez ingerencji fizycznej, co jest kluczowe w monitorowaniu dużych obszarów (np. hal \cite{AlFuqaha:2015}.
 \subsubsection{Kontrola Dostępu}
 \label{subsubsec:kontrola_dostepu}
 
@@ -79,7 +76,7 @@ Przykłady zastosowań inżynierskich obejmują:
     \item \textbf{Rozpoznawanie Twarzy (Facial Recognition):} Zastosowanie algorytmów głębokiego uczenia do identyfikacji i weryfikacji osób uprawnionych, automatycznie odblokowując wejścia.
 \item \textbf{Rozpoznawanie Tablic Rejestracyjnych (ANPR):} Automatyczne zezwalanie na wjazd pojazdów do strzeżonych stref (np. parkingów pracowniczych) na podstawie analizy obrazu z kamery.
 \end{enumerate}
-Takie rozwiązania minimalizują ryzyko błędów ludzkich i zwiększają bezpieczeństwo poprzez ciągłe logowanie zdarzeń wejścia i wyjścia, stanowiąc integralną część zabezpieczeń fizycznych i sieciowych \cite{Bou-Harb:2024}.
+Takie rozwiązania minimalizują ryzyko błędów ludzkich i zwiększają bezpieczeństwo poprzez ciągłe logowanie zdarzeń wejścia i wyjścia, stanowiąc integralną część zabezpieczeń fizycznych i sieciowych \cite{BouHarb:2024}.
 \subsubsection{Zarządzanie Procesami Biznesowymi}
 \label{subsubsec:zarzadzanie_procesami_biznesowymi}
 
@@ -120,7 +117,8 @@ Uwolnienie strumienia z kamery Tapo C200 jest podstawowym warunkiem inżynierski
 \subsection{Budowa}
 \label{subsec:budowa}
 Zrozumienie architektury kamery IP jest kluczowe dla identyfikacji ograniczeń narzucanych przez producentów i zaprojektowania skutecznego, otwartego oprogramowania.
-Z perspektywy inżynierskiej, kamera IP nie jest monolitycznym urządzeniem, lecz złożonym systemem wbudowanym, składającym się ze ściśle zintegrowanych komponentów sprzętowych (hardware) i dedykowanego oprogramowania (firmware), które zarządza ich pracą \cite{Routledge:2021}.
+
+Z perspektywy inżynierskiej, kamera IP nie jest monolitycznym urządzeniem, lecz złożonym systemem wbudowanym, składającym się ze ściśle zintegrowanych komponentów sprzętowych (hardware) i dedykowanego oprogramowania (firmware), które zarządza ich pracą .
 Poniższe podrozdziały szczegółowo omawiają te dwie warstwy.
 
 \subsubsection{Budowa Fizyczna - Hardware}
